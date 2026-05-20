@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jala Media — Modern Digital Marketing & Influencer Agency</title>
+<meta name="description" content="Jala Media helps brands grow through influencer marketing, social-first campaigns, and creative digital advertising strategies." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          serif: ['"Instrument Serif"', 'serif'],
+        },
+        colors: {
+          cream:    { 50: '#FFFBF5', 100: '#FFF6EC', 200: '#FAEFE2' },
+          lavender: { 100: '#F2EBFB', 200: '#E4D7F5', 300: '#C9B5EC', 400: '#A78BD9' },
+          pinkp:    { 100: '#FCE7EF', 200: '#F9D2E0', 300: '#F4B2C8' },
+          sky:      { 100: '#E6F2FB', 200: '#CDE3F5', 300: '#A6CDEC' },
+          peach:    { 100: '#FFE9DC', 200: '#FFD3BB', 300: '#FFB897' },
+          ink:      { 900: '#1F1538', 700: '#3D2E5C', 500: '#6B5C87' },
+        },
+        boxShadow: {
+          soft:  '0 10px 40px -10px rgba(123, 89, 178, 0.18)',
+          softer:'0 8px 30px -8px rgba(123, 89, 178, 0.10)',
+          glow:  '0 0 60px -10px rgba(201, 181, 236, 0.6)',
+        },
+        borderRadius: {
+          '4xl': '2rem',
+          '5xl': '2.5rem',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #FFFBF5;
+    color: #1F1538;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Decorative pastel blobs */
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating animation for hero cards */
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50%      { transform: translateY(-14px) rotate(var(--r, 0deg)); }
+  }
+  @keyframes float-med {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50%      { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+  }
+  .floaty-slow { animation: float-slow 7s ease-in-out infinite; }
+  .floaty-med  { animation: float-med 5s ease-in-out infinite; }
+
+  /* Subtle glow ring */
+  .glow-ring::after {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(201,181,236,0.5), rgba(244,178,200,0.5), rgba(166,205,236,0.4));
+    z-index: -1; filter: blur(14px); opacity: 0.7;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Nav backdrop blur (Safari fallback) */
+  .nav-blur {
+    background: rgba(255, 251, 245, 0.72);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(120deg, #A78BD9 0%, #F4B2C8 50%, #FFB897 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Service card hover */
+  .service-card {
+    transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease, border-color .45s ease;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px -20px rgba(123, 89, 178, 0.28);
+    border-color: rgba(201, 181, 236, 0.7);
+  }
+  .service-card .arrow {
+    transition: transform .35s ease, background-color .35s ease, color .35s ease;
+  }
+  .service-card:hover .arrow {
+    transform: rotate(-45deg);
+    background-color: #1F1538;
+    color: #FFFBF5;
+  }
+
+  /* Form */
+  .input {
+    width: 100%;
+    background: #FFFBF5;
+    border: 1px solid rgba(123, 89, 178, 0.14);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font: inherit;
+    color: #1F1538;
+    transition: border-color .25s, box-shadow .25s, background-color .25s;
+  }
+  .input:focus {
+    outline: none;
+    border-color: #C9B5EC;
+    box-shadow: 0 0 0 4px rgba(201, 181, 236, 0.25);
+    background: #FFFFFF;
+  }
+  .input::placeholder { color: #9B8DB5; }
+
+  /* Mobile menu */
+  .mobile-menu { display: none; }
+  .mobile-menu.open { display: block; }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track { animation: marquee 38s linear infinite; }
+
+  /* Image overlay tint to blend with pastel palette */
+  .img-tint::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,181,236,0.18), rgba(255,184,151,0.10));
+    pointer-events: none;
+  }
+
+  /* Hide scrollbar on horizontal lists */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="font-sans antialiased text-ink-900 overflow-x-hidden">
+
+<!-- ============== HEADER / NAV ============== -->
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <div class="nav-blur border-b border-transparent">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-[72px] flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 group">
+        <span class="relative inline-flex w-9 h-9 items-center justify-center rounded-2xl bg-gradient-to-br from-lavender-300 via-pinkp-200 to-peach-200 shadow-softer">
+          <span class="font-serif italic text-ink-900 text-xl leading-none">j</span>
+        </span>
+        <span class="text-[19px] font-semibold tracking-tight">Jala <span class="font-serif italic font-normal">Media</span></span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-9 text-[15px] text-ink-700">
+        <a href="#home" class="hover:text-ink-900 transition">Home</a>
+        <a href="#about" class="hover:text-ink-900 transition">About</a>
+        <a href="#services" class="hover:text-ink-900 transition">Services</a>
+        <a href="#contact" class="hover:text-ink-900 transition">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="hidden md:inline-flex items-center gap-2 bg-ink-900 text-cream-50 px-5 py-2.5 rounded-full text-sm font-medium hover:bg-ink-700 transition shadow-softer">
+          Work With Us
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </a>
+        <button id="menu-btn" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/70 border border-lavender-200" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden px-6 pb-6">
+      <div class="rounded-3xl bg-white shadow-soft p-5 flex flex-col gap-3 text-ink-700">
+        <a href="#home" class="py-2 menu-link">Home</a>
+        <a href="#about" class="py-2 menu-link">About</a>
+        <a href="#services" class="py-2 menu-link">Services</a>
+        <a href="#contact" class="py-2 menu-link">Contact</a>
+        <a href="#contact" class="menu-link inline-flex items-center justify-center bg-ink-900 text-cream-50 px-5 py-3 rounded-full text-sm font-medium mt-1">Work With Us</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section id="home" class="relative pt-32 lg:pt-36 pb-24 lg:pb-32 overflow-hidden">
+  <!-- decorative blobs -->
+  <div class="blob bg-lavender-300" style="width:520px;height:520px;top:-120px;left:-160px;"></div>
+  <div class="blob bg-pinkp-200" style="width:420px;height:420px;top:80px;right:-120px;"></div>
+  <div class="blob bg-peach-200" style="width:360px;height:360px;bottom:-180px;left:30%;opacity:.45;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+      <!-- copy -->
+      <div class="lg:col-span-6 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-lavender-200 shadow-softer text-xs font-medium text-ink-700 mb-7">
+          <span class="w-2 h-2 rounded-full bg-pinkp-300 animate-pulse"></span>
+          Creator-led marketing studio · est. 2024
+        </div>
+        <h1 class="font-semibold tracking-tight leading-[1.02] text-[44px] sm:text-[56px] lg:text-[68px]">
+          Grow Your Brand <br />
+          Through <span class="font-serif italic font-normal gradient-text">Modern</span> <br />
+          Digital Marketing
+        </h1>
+        <p class="mt-7 text-[17px] lg:text-[18px] text-ink-500 leading-relaxed max-w-xl">
+          Jala Media helps brands build stronger online presence through influencer marketing, social-first campaigns, and creative digital advertising strategies designed for today's audience.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href="#contact" class="inline-flex items-center gap-2 bg-ink-900 text-cream-50 px-6 py-3.5 rounded-full text-[15px] font-medium hover:bg-ink-700 transition shadow-soft">
+            Start Your Campaign
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#services" class="inline-flex items-center gap-2 bg-white/80 backdrop-blur text-ink-900 border border-lavender-200 px-6 py-3.5 rounded-full text-[15px] font-medium hover:bg-white transition">
+            Explore Services
+          </a>
+        </div>
+
+        <!-- mini metric strip -->
+        <div class="mt-12 flex items-center gap-8">
+          <div>
+            <div class="text-2xl font-semibold">120+</div>
+            <div class="text-xs uppercase tracking-wider text-ink-500 mt-1">Campaigns Launched</div>
+          </div>
+          <div class="h-10 w-px bg-lavender-200"></div>
+          <div>
+            <div class="text-2xl font-semibold">45M+</div>
+            <div class="text-xs uppercase tracking-wider text-ink-500 mt-1">Social Reach</div>
+          </div>
+          <div class="h-10 w-px bg-lavender-200 hidden sm:block"></div>
+          <div class="hidden sm:block">
+            <div class="text-2xl font-semibold">300+</div>
+            <div class="text-xs uppercase tracking-wider text-ink-500 mt-1">Creators</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- visual cluster -->
+      <div class="lg:col-span-6 relative reveal">
+        <div class="relative aspect-[5/6] max-w-[560px] mx-auto">
+          <!-- main image card -->
+          <div class="relative w-full h-full rounded-[36px] overflow-hidden shadow-soft glow-ring img-tint">
+            <img
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80'"
+              alt="Young Asian creative team collaborating in a bright modern office"
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+
+          <!-- floating metric card (top left) -->
+          <div class="absolute -top-6 -left-6 sm:-left-10 floaty-slow" style="--r:-4deg">
+            <div class="bg-white rounded-2xl shadow-soft px-5 py-4 w-[200px] border border-cream-200">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] uppercase tracking-wider text-ink-500">Engagement</span>
+                <span class="text-[11px] font-medium text-emerald-600">▲ 38%</span>
+              </div>
+              <div class="mt-2 text-2xl font-semibold">+12.4K</div>
+              <div class="mt-3 flex items-end gap-1 h-8">
+                <span class="flex-1 bg-lavender-200 rounded-sm" style="height:30%"></span>
+                <span class="flex-1 bg-lavender-200 rounded-sm" style="height:55%"></span>
+                <span class="flex-1 bg-pinkp-200 rounded-sm" style="height:42%"></span>
+                <span class="flex-1 bg-pinkp-200 rounded-sm" style="height:70%"></span>
+                <span class="flex-1 bg-peach-200 rounded-sm" style="height:60%"></span>
+                <span class="flex-1 bg-peach-300 rounded-sm" style="height:92%"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- floating social card (bottom right) -->
+          <div class="absolute -bottom-8 -right-4 sm:-right-10 floaty-med" style="--r:3deg">
+            <div class="bg-white rounded-2xl shadow-soft p-4 w-[230px] border border-cream-200">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pinkp-300 to-peach-300"></div>
+                <div>
+                  <div class="text-sm font-semibold leading-tight">@jala.studio</div>
+                  <div class="text-[11px] text-ink-500">Campaign live · just now</div>
+                </div>
+              </div>
+              <div class="mt-3 rounded-xl overflow-hidden aspect-[4/3]">
+                <img src="https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=400&q=70" alt="Campaign creative" class="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div class="mt-2 flex items-center gap-3 text-[12px] text-ink-500">
+                <span class="inline-flex items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C.6 8.5 2.6 4 7 4c2 0 3.5 1.2 5 3 1.5-1.8 3-3 5-3 4.4 0 6.4 4.5 4.5 8C19 16.5 12 21 12 21z"/></svg>2.8k</span>
+                <span class="inline-flex items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>412</span>
+                <span class="ml-auto text-pinkp-300 font-medium">+18%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- small pill (top right) -->
+          <div class="absolute top-10 -right-3 sm:right-6 floaty-slow" style="--r:6deg">
+            <div class="bg-lavender-100 border border-lavender-200 rounded-full px-4 py-2 text-xs font-medium text-ink-700 shadow-softer flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Live on TikTok & IG
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============== ABOUT ============== -->
+<section id="about" class="relative py-24 lg:py-32">
+  <div class="blob bg-sky-200" style="width:380px;height:380px;top:120px;left:-80px;opacity:.45"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="grid lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-7 reveal">
+        <span class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-ink-500 mb-5">
+          <span class="w-6 h-px bg-ink-500"></span> About Jala Media
+        </span>
+        <h2 class="font-semibold tracking-tight leading-[1.05] text-[36px] sm:text-[44px] lg:text-[52px] max-w-2xl">
+          A creative team built for <span class="font-serif italic font-normal gradient-text">modern brands</span>.
+        </h2>
+      </div>
+      <div class="lg:col-span-5 reveal">
+        <p class="text-[17px] text-ink-500 leading-relaxed">
+          Jala Media LLC is a modern digital marketing agency focused on helping brands grow through social-first campaigns, influencer collaborations, and creative advertising strategies. We work closely with businesses to create campaigns that feel authentic, engaging, and built for modern online audiences.
+        </p>
+      </div>
+    </div>
+
+    <!-- About visuals + value cards -->
+    <div class="mt-16 grid lg:grid-cols-12 gap-8">
+      <!-- left image collage -->
+      <div class="lg:col-span-5 reveal">
+        <div class="relative h-full min-h-[440px]">
+          <div class="absolute top-0 left-0 w-[68%] aspect-[4/5] rounded-[28px] overflow-hidden shadow-soft img-tint">
+            <img src="https://images.unsplash.com/photo-1573496773905-f5b17e717f05?auto=format&fit=crop&w=700&q=80"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=80'"
+                 alt="Young Asian creative team in conversation" class="w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="absolute bottom-0 right-0 w-[58%] aspect-square rounded-[28px] overflow-hidden shadow-soft img-tint border-4 border-cream-50">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80'"
+                 alt="Modern creative workspace with laptop" class="w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="absolute top-6 right-2 floaty-med" style="--r:5deg">
+            <div class="bg-white/95 rounded-2xl shadow-softer border border-cream-200 px-4 py-3 flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-lavender-300 to-pinkp-300 flex items-center justify-center text-white text-xs font-semibold">✦</div>
+              <div>
+                <div class="text-[11px] uppercase tracking-wider text-ink-500">Avg ROAS</div>
+                <div class="text-sm font-semibold">4.8x</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right value cards -->
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-5 content-start">
+        <!-- card 1 -->
+        <div class="reveal rounded-3xl bg-gradient-to-br from-lavender-100 to-white border border-lavender-200 p-7 sm:col-span-2">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 rounded-2xl bg-white shadow-softer flex items-center justify-center text-lavender-400">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c1-4 4-6 7-6s6 2 7 6"/><path d="M19 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold tracking-tight">Influencer & Social Campaigns</h3>
+              <p class="mt-2 text-ink-500 leading-relaxed text-[15px]">Curated creator partnerships and platform-native campaigns that feel real, not staged — built to connect with audiences who scroll fast and care deeply.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- card 2 -->
+        <div class="reveal rounded-3xl bg-gradient-to-br from-pinkp-100 to-white border border-pinkp-200 p-7">
+          <div class="w-12 h-12 rounded-2xl bg-white shadow-softer flex items-center justify-center text-pinkp-300 mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.6-1.5z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold tracking-tight">Creative Digital Marketing</h3>
+          <p class="mt-2 text-ink-500 leading-relaxed text-[15px]">Concepts, content and visual systems built specifically for modern platforms and the way people actually browse them.</p>
+        </div>
+
+        <!-- card 3 -->
+        <div class="reveal rounded-3xl bg-gradient-to-br from-peach-100 to-white border border-peach-200 p-7">
+          <div class="w-12 h-12 rounded-2xl bg-white shadow-softer flex items-center justify-center text-peach-300 mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h7v7"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold tracking-tight">Brand-Focused Growth Strategy</h3>
+          <p class="mt-2 text-ink-500 leading-relaxed text-[15px]">Positioning, audience and channel strategies that grow brand love alongside revenue — never one at the expense of the other.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICES ============== -->
+<section id="services" class="relative py-24 lg:py-32 bg-gradient-to-b from-cream-50 via-lavender-100/40 to-cream-50">
+  <div class="blob bg-pinkp-200" style="width:340px;height:340px;top:60px;right:-80px;opacity:.35"></div>
+  <div class="blob bg-sky-200" style="width:300px;height:300px;bottom:120px;left:-60px;opacity:.4"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
+      <div class="reveal max-w-2xl">
+        <span class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-ink-500 mb-5">
+          <span class="w-6 h-px bg-ink-500"></span> Our Services
+        </span>
+        <h2 class="font-semibold tracking-tight leading-[1.05] text-[36px] sm:text-[44px] lg:text-[52px]">
+          Everything your brand needs to <span class="font-serif italic font-normal gradient-text">show up beautifully</span> online.
+        </h2>
+      </div>
+      <p class="reveal text-ink-500 max-w-sm text-[15px] leading-relaxed">
+        From strategy to creator partnerships to paid media — we run the full stack so your brand can stay focused on the product.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Service 1 -->
+      <article class="reveal service-card group relative overflow-hidden rounded-3xl bg-gradient-to-br from-cream-100 to-white border border-cream-200 p-8">
+        <div class="flex items-start justify-between">
+          <span class="text-xs uppercase tracking-[0.18em] text-ink-500">01</span>
+          <span class="arrow inline-flex w-10 h-10 rounded-full bg-white text-ink-900 items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </div>
+        <h3 class="mt-10 text-2xl font-semibold tracking-tight">Digital Marketing</h3>
+        <p class="mt-3 text-ink-500 leading-relaxed text-[15px]">Plan and manage digital advertising campaigns designed to increase visibility, engagement, and online growth across the channels that matter for your brand.</p>
+      </article>
+
+      <!-- Service 2 -->
+      <article class="reveal service-card group relative overflow-hidden rounded-3xl bg-gradient-to-br from-pinkp-100 to-white border border-pinkp-200 p-8">
+        <div class="flex items-start justify-between">
+          <span class="text-xs uppercase tracking-[0.18em] text-ink-500">02</span>
+          <span class="arrow inline-flex w-10 h-10 rounded-full bg-white text-ink-900 items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </div>
+        <h3 class="mt-10 text-2xl font-semibold tracking-tight">Influencer Marketing</h3>
+        <p class="mt-3 text-ink-500 leading-relaxed text-[15px]">Connect brands with creators and influencers to build authentic social media campaigns that drive trust, reach and real conversion.</p>
+      </article>
+
+      <!-- Service 3 -->
+      <article class="reveal service-card group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-100 to-white border border-sky-200 p-8">
+        <div class="flex items-start justify-between">
+          <span class="text-xs uppercase tracking-[0.18em] text-ink-500">03</span>
+          <span class="arrow inline-flex w-10 h-10 rounded-full bg-white text-ink-900 items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </div>
+        <h3 class="mt-10 text-2xl font-semibold tracking-tight">Social Media Campaigns</h3>
+        <p class="mt-3 text-ink-500 leading-relaxed text-[15px]">Develop content-driven campaigns tailored for modern platforms and online audiences — across TikTok, Instagram, YouTube Shorts and beyond.</p>
+      </article>
+
+      <!-- Service 4 -->
+      <article class="reveal service-card group relative overflow-hidden rounded-3xl bg-gradient-to-br from-peach-100 to-white border border-peach-200 p-8">
+        <div class="flex items-start justify-between">
+          <span class="text-xs uppercase tracking-[0.18em] text-ink-500">04</span>
+          <span class="arrow inline-flex w-10 h-10 rounded-full bg-white text-ink-900 items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </div>
+        <h3 class="mt-10 text-2xl font-semibold tracking-tight">Brand Growth Strategy</h3>
+        <p class="mt-3 text-ink-500 leading-relaxed text-[15px]">Help businesses improve brand positioning and customer engagement through creative marketing strategies grounded in real audience insight.</p>
+      </article>
+
+      <!-- Service 5 -->
+      <article class="reveal service-card group relative overflow-hidden rounded-3xl bg-gradient-to-br from-lavender-100 to-white border border-lavender-200 p-8 md:col-span-2 lg:col-span-1">
+        <div class="flex items-start justify-between">
+          <span class="text-xs uppercase tracking-[0.18em] text-ink-500">05</span>
+          <span class="arrow inline-flex w-10 h-10 rounded-full bg-white text-ink-900 items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </div>
+        <h3 class="mt-10 text-2xl font-semibold tracking-tight">Advertising Support</h3>
+        <p class="mt-3 text-ink-500 leading-relaxed text-[15px]">Support businesses with campaign operations, advertising setup, and digital growth execution — the steady hands behind the scenes.</p>
+      </article>
+    </div>
+
+    <!-- process strip -->
+    <div class="reveal mt-16 rounded-[28px] bg-white border border-cream-200 shadow-softer p-8 lg:p-10">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="text-xs uppercase tracking-[0.18em] text-ink-500">Step 01</div>
+          <div class="mt-2 font-semibold text-lg">Discovery call</div>
+          <p class="mt-1 text-sm text-ink-500 leading-relaxed">A relaxed conversation about your brand, goals and audience.</p>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-[0.18em] text-ink-500">Step 02</div>
+          <div class="mt-2 font-semibold text-lg">Strategy & creative</div>
+          <p class="mt-1 text-sm text-ink-500 leading-relaxed">We build the campaign plan, creator shortlist and creative direction.</p>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-[0.18em] text-ink-500">Step 03</div>
+          <div class="mt-2 font-semibold text-lg">Launch & manage</div>
+          <p class="mt-1 text-sm text-ink-500 leading-relaxed">Campaigns go live, creators post, and ads are tuned daily.</p>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-[0.18em] text-ink-500">Step 04</div>
+          <div class="mt-2 font-semibold text-lg">Measure & grow</div>
+          <p class="mt-1 text-sm text-ink-500 leading-relaxed">Transparent reporting plus next-cycle recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONTACT ============== -->
+<section id="contact" class="relative py-24 lg:py-32 overflow-hidden">
+  <div class="blob bg-lavender-300" style="width:460px;height:460px;top:-80px;right:-120px;opacity:.45"></div>
+  <div class="blob bg-pinkp-200" style="width:380px;height:380px;bottom:-120px;left:-120px;opacity:.4"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- intro -->
+      <div class="lg:col-span-5 reveal">
+        <span class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-ink-500 mb-5">
+          <span class="w-6 h-px bg-ink-500"></span> Contact
+        </span>
+        <h2 class="font-semibold tracking-tight leading-[1.05] text-[36px] sm:text-[44px] lg:text-[52px]">
+          Let's create something <span class="font-serif italic font-normal gradient-text">beautiful</span> together.
+        </h2>
+        <p class="mt-6 text-ink-500 text-[17px] leading-relaxed max-w-md">
+          Tell us about your brand, campaign ideas, or growth goals — we'd love to hear from you.
+        </p>
+
+        <div class="mt-10 space-y-5 text-[15px]">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-2xl bg-lavender-100 flex items-center justify-center text-lavender-400 shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/></svg>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-ink-500">Email</div>
+              <a href="mailto:hello@jalamedia.com" class="font-medium hover:text-lavender-400 transition">hello@jalamedia.com</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-2xl bg-pinkp-100 flex items-center justify-center text-pinkp-300 shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-ink-500">Studio</div>
+              <div class="font-medium leading-relaxed">1209 Mountain Road PL NE Ste N<br/>Albuquerque, NM 87110</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-2xl bg-peach-100 flex items-center justify-center text-peach-300 shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-ink-500">Hours</div>
+              <div class="font-medium">Mon — Fri · 9:00 — 18:00 MT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- form -->
+      <div class="lg:col-span-7 reveal">
+        <div class="relative rounded-[32px] bg-white border border-cream-200 shadow-soft p-7 sm:p-10">
+          <!-- form -->
+          <form id="contact-form" class="space-y-5" novalidate>
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label class="text-xs uppercase tracking-wider text-ink-500 mb-2 block">Name</label>
+                <input class="input" type="text" name="name" placeholder="Jane Nguyen" required />
+              </div>
+              <div>
+                <label class="text-xs uppercase tracking-wider text-ink-500 mb-2 block">Email</label>
+                <input class="input" type="email" name="email" placeholder="jane@brand.com" required />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-wider text-ink-500 mb-2 block">Company</label>
+              <input class="input" type="text" name="company" placeholder="Your brand or company" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-wider text-ink-500 mb-2 block">Message</label>
+              <textarea class="input" name="message" rows="5" placeholder="Tell us a little about your brand, campaign idea, or goal..." required></textarea>
+            </div>
+            <div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p class="text-xs text-ink-500">By submitting you agree to be contacted about your inquiry.</p>
+              <button type="submit" class="inline-flex items-center gap-2 bg-ink-900 text-cream-50 px-6 py-3.5 rounded-full text-[15px] font-medium hover:bg-ink-700 transition shadow-soft">
+                Send Message
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- success state -->
+          <div id="contact-success" class="hidden text-center py-10">
+            <div class="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-lavender-200 via-pinkp-200 to-peach-200 flex items-center justify-center mb-5 shadow-softer">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F1538" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h3 class="text-2xl font-semibold tracking-tight">Message sent — talk soon!</h3>
+            <p class="mt-3 text-ink-500 max-w-sm mx-auto leading-relaxed">Thanks for reaching out. A member of the Jala Media team will get back to you within one business day.</p>
+            <button id="contact-reset" class="mt-7 inline-flex items-center gap-2 text-sm font-medium text-ink-900 hover:text-lavender-400 transition">
+              Send another message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="relative bg-ink-900 text-cream-100 pt-20 pb-10 overflow-hidden">
+  <div class="blob" style="width:400px;height:400px;top:-100px;left:30%;background:#3D2E5C;opacity:.6"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="grid lg:grid-cols-12 gap-12 pb-14">
+      <div class="lg:col-span-5">
+        <a href="#home" class="inline-flex items-center gap-2">
+          <span class="relative inline-flex w-9 h-9 items-center justify-center rounded-2xl bg-gradient-to-br from-lavender-300 via-pinkp-200 to-peach-200">
+            <span class="font-serif italic text-ink-900 text-xl leading-none">j</span>
+          </span>
+          <span class="text-[19px] font-semibold tracking-tight text-cream-50">Jala <span class="font-serif italic font-normal">Media</span></span>
+        </a>
+        <p class="mt-6 text-cream-100/70 leading-relaxed max-w-md text-[15px]">
+          A modern digital marketing studio building social-first campaigns for brands that care about how they show up online.
+        </p>
+        <div class="mt-7 flex items-center gap-3">
+          <!-- socials -->
+          <a aria-label="Instagram" href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 transition flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a aria-label="TikTok" href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 transition flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3v10.2a3.3 3.3 0 1 1-3.3-3.3v2.4a.9.9 0 1 0 .9.9V3h2.4a4.5 4.5 0 0 0 4.5 4.5v2.4A6.9 6.9 0 0 1 14 7.7z"/></svg>
+          </a>
+          <a aria-label="LinkedIn" href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 transition flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v4H4zM4 10h4v10H4zM10 10h4v1.6c.6-1 1.9-1.9 3.6-1.9 3 0 3.4 2 3.4 4.6V20h-4v-4.5c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4V20h-4z"/></svg>
+          </a>
+          <a aria-label="YouTube" href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 transition flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2s-.2-1.6-.9-2.3c-.8-.9-1.7-.9-2.2-1C16.6 3.6 12 3.6 12 3.6s-4.6 0-7.9.3c-.5.1-1.4.1-2.2 1C1.2 5.6 1 7.2 1 7.2S.8 9.1.8 11v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1 1.8.2 7.7.3 7.7.3s4.6 0 7.9-.3c.5-.1 1.4-.1 2.2-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8V11c0-1.9-.2-3.8-.2-3.8zM9.8 14.8V7.9l6 3.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="text-xs uppercase tracking-[0.18em] text-cream-100/50 mb-4">Quick links</div>
+        <ul class="space-y-3 text-cream-100/80">
+          <li><a class="hover:text-cream-50 transition" href="#about">About</a></li>
+          <li><a class="hover:text-cream-50 transition" href="#services">Services</a></li>
+          <li><a class="hover:text-cream-50 transition" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="text-xs uppercase tracking-[0.18em] text-cream-100/50 mb-4">Contact</div>
+        <ul class="space-y-3 text-cream-100/80">
+          <li><a class="hover:text-cream-50 transition" href="mailto:hello@jalamedia.com">hello@jalamedia.com</a></li>
+          <li><a class="hover:text-cream-50 transition" href="#contact">Start a project</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3">
+        <div class="text-xs uppercase tracking-[0.18em] text-cream-100/50 mb-4">Studio</div>
+        <p class="text-cream-100/80 leading-relaxed text-[15px]">
+          <span class="block font-medium text-cream-50">Jala Media LLC</span>
+          1209 Mountain Road PL NE Ste N<br/>
+          Albuquerque, NM 87110<br/>
+          United States
+        </p>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream-100/50">
+      <p>© <span id="year"></span> Jala Media LLC. All rights reserved.</p>
+      <p class="flex items-center gap-4">
+        <a href="#" class="hover:text-cream-50 transition">Privacy</a>
+        <a href="#" class="hover:text-cream-50 transition">Terms</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky header subtle border on scroll
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 8) {
+      header.querySelector('.nav-blur').classList.add('shadow-softer','border-lavender-200');
+    } else {
+      header.querySelector('.nav-blur').classList.remove('shadow-softer','border-lavender-200');
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Mobile menu toggle
+  const menuBtn  = document.getElementById('menu-btn');
+  const mobile   = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => mobile.classList.toggle('open'));
+  mobile.querySelectorAll('.menu-link').forEach(el => el.addEventListener('click', () => mobile.classList.remove('open')));
+
+  // Reveal-on-scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Contact form (prototype only)
+  const form = document.getElementById('contact-form');
+  const success = document.getElementById('contact-success');
+  const reset = document.getElementById('contact-reset');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.classList.add('hidden');
+    success.classList.remove('hidden');
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  reset.addEventListener('click', () => {
+    form.reset();
+    success.classList.add('hidden');
+    form.classList.remove('hidden');
+  });
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
